@@ -1,11 +1,11 @@
-const AssetSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  type: { 
-    type: String, 
-    enum: ['weapon', 'vehicle', 'ammunition', 'equipment'],
-    required: true 
-  },
-  quantity: { type: Number, default: 0 },
-  base: { type: mongoose.Schema.Types.ObjectId, ref: 'Base' },
-  status: { type: String, default: 'available' }
-}, { timestamps: true });
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+
+const Asset = sequelize.define('Asset', {
+  name: DataTypes.STRING,
+  type: DataTypes.STRING, // weapon, vehicle, etc.
+  quantity: DataTypes.INTEGER,
+  base: DataTypes.STRING
+});
+
+export default Asset;
