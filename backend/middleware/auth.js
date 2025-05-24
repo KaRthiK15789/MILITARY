@@ -1,20 +1,20 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-exports.authenticate = (req, res, next) => {
-  const token = req.header('x-auth-token');
-  if (!token) return res.status(401).send('Access denied');
+export function authenticate(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Missing token' });
 
   try {
     req.user = jwt.verify(token, process.env.JWT_SECRET);
     next();
-  } catch (err) {
-    res.status(400).send('Invalid token');
+  } catch {
+    res.status(403).json({ message: 'Invalid token' });
   }
-};
+}
 
-exports.authorize = (roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
-    return res.status(403).send('Unauthorized');
-  }
-  next();
-};
+export function authorize(roles = []) {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) return res.status(403).json({ message: 'Forbidden' });
+    next();
+  };
+}
