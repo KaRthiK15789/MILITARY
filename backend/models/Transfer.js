@@ -1,8 +1,12 @@
-const TransferSchema = new mongoose.Schema({
-  asset: { type: mongoose.Schema.Types.ObjectId, ref: 'Asset' },
-  fromBase: { type: mongoose.Schema.Types.ObjectId, ref: 'Base' },
-  toBase: { type: mongoose.Schema.Types.ObjectId, ref: 'Base' },
-  quantity: { type: Number, required: true },
-  initiatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  status: { type: String, default: 'pending' }
-}, { timestamps: true });
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+
+const Transfer = sequelize.define('Transfer', {
+  assetId: DataTypes.INTEGER,
+  fromBase: DataTypes.STRING,
+  toBase: DataTypes.STRING,
+  quantity: DataTypes.INTEGER,
+  date: DataTypes.DATE
+});
+
+export default Transfer;
